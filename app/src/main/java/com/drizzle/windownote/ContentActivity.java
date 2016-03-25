@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -26,27 +24,36 @@ public class ContentActivity extends AppCompatActivity {
 	@Bind(R.id.title_edit) EditText titleEdit;
 	@Bind(R.id.content_edit) EditText contentEdit;
 	@Bind(R.id.content_date) TextView contentDate;
-	private List<NoteBean> mNoteBeanList;
 	private int noteId;
 	private int EDIT_STATUS;
 	private static final int EDIT_DISABLE = 1;
 	private static final int EDIT_ENABLE = 2;
 	private int noteType;
+	private NoteBean mNoteBean;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_content);
 		ButterKnife.bind(this);
+		initData();
+		initViews();
+	}
+
+	private void initData() {
 		Intent intent = getIntent();
 		noteType = intent.getIntExtra(Tag.NOTE_TYPE, Tag.NEW_NOTE_TYPE);
 		if (noteType == Tag.NEW_NOTE_TYPE) {
 			EDIT_STATUS = EDIT_ENABLE;
+			mNoteBean = new NoteBean();
+			mNoteBean.setId(System.currentTimeMillis());
+			mNoteBean.setMinSeconds(System.currentTimeMillis());
+			mNoteBean.setTitle("");
+			mNoteBean.setContent("");
 		} else {
 			EDIT_STATUS = EDIT_DISABLE;
 			noteId = intent.getIntExtra(Tag.NOTE_ID, 0);
+			mNoteBean = NoteUtils.getNote(noteId);
 		}
-		initData();
-		initViews();
 	}
 
 	private void initViews() {
@@ -54,8 +61,8 @@ public class ContentActivity extends AppCompatActivity {
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		titleEdit.setText(mNoteBeanList.get(noteId).getTitle());
-		contentDate.setText(mNoteBeanList.get(noteId).getDate());
+		titleEdit.setText(mNoteBean.getTitle());
+		contentDate.setText(mNoteBean.getDate());
 		mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
 				if (EDIT_STATUS == EDIT_DISABLE) {
@@ -69,17 +76,6 @@ public class ContentActivity extends AppCompatActivity {
 				}
 			}
 		});
-	}
-
-	private void initData() {
-		mNoteBeanList = new ArrayList<>();
-		for (int i = 0; i < 100; i++) {
-			NoteBean noteBean = new NoteBean();
-			noteBean.setId(i);
-			noteBean.setDate("2015年" + i + "月");
-			noteBean.setTitle("2015年2015年2015年" + i + "条");
-			mNoteBeanList.add(noteBean);
-		}
 	}
 
 	private void refreshEditStatus() {
@@ -98,7 +94,7 @@ public class ContentActivity extends AppCompatActivity {
 		if (EDIT_STATUS == EDIT_DISABLE) {
 			finish();
 		} else {
-			if (TextUtils.isEmpty(titleEdit.getText().toString()) && TextUtils.isEmpty(
+			if (TextUtils.isEmpty(titleEdit.getText().toString()) || TextUtils.isEmpty(
 				contentEdit.getText().toString())) {
 				new AlertDialog.Builder(this).setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override public void onClick(DialogInterface dialog, int which) {
@@ -111,7 +107,6 @@ public class ContentActivity extends AppCompatActivity {
 					}
 				}).setTitle("确定?").setMessage(R.string.dialog_message).show();
 			} else {
-				//TODO:保存并退出
 				finish();
 			}
 		}
@@ -128,9 +123,12 @@ public class ContentActivity extends AppCompatActivity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == android.R.id.home) {
-			onBackClicked();
-			return true;
+		switch (id) {
+			case android.R.id.home:
+				onBackClicked();
+				break;
+			default:
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

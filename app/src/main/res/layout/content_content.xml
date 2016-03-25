@@ -41,7 +41,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="2014年"
-		android:layout_gravity="right"
+		android:layout_gravity="end"
 		android:textSize="16sp"
 		android:layout_margin="12dp"
 		/>

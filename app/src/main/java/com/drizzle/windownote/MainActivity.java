@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
-		initData();
 		initViews();
 	}
 
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 		mMainAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(MainActivity.this, ContentActivity.class);
-				intent.putExtra(Tag.NOTE_ID, id);
+				intent.putExtra(Tag.NOTE_ID, position);
 				intent.putExtra(Tag.NOTE_TYPE, Tag.EXIST_NOTE_TYPE);
 				ActivityOptionsCompat optionsCompat =
 					ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this,
@@ -64,14 +62,11 @@ public class MainActivity extends AppCompatActivity {
 		});
 	}
 
-	private void initData() {
-		mNoteBeanList = new ArrayList<>();
-		for (int i = 0; i < 100; i++) {
-			NoteBean noteBean = new NoteBean();
-			noteBean.setId(i);
-			noteBean.setDate("2015年" + i + "月");
-			noteBean.setTitle("2015年2015年2015年" + i + "条");
-			mNoteBeanList.add(noteBean);
-		}
+	@Override protected void onResume() {
+		super.onResume();
+		List<NoteBean> noteBeanList = NoteUtils.getNoteList();
+		mNoteBeanList.clear();
+		mNoteBeanList.addAll(noteBeanList);
+		mMainAdapter.notifyDataSetChanged();
 	}
 }

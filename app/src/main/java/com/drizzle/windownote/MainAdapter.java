@@ -39,8 +39,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 		holder.itemCard.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View v) {
 				if (mOnItemClickListener != null) {
-					mOnItemClickListener.onItemClick(null, holder.itemCard, position,
-						getNoteBean(position).getId());
+					mOnItemClickListener.onItemClick(null, holder.itemCard, position, getNoteBean(position).getId());
 				}
 			}
 		});

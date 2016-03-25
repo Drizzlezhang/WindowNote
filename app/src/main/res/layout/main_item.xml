@@ -30,7 +30,7 @@
 		android:transitionName="@string/transition_date"
 		android:textSize="12sp"
 		android:text="2016年3月2日"
-		android:layout_gravity="bottom|right"
+		android:layout_gravity="bottom|end"
 		android:layout_margin="4dp"
 		/>
 

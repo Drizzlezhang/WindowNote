@@ -43,7 +43,7 @@ public class ContentActivity extends AppCompatActivity {
 		Intent intent = getIntent();
 		noteType = intent.getIntExtra(Tag.NOTE_TYPE, Tag.NEW_NOTE_TYPE);
 		if (noteType == Tag.NEW_NOTE_TYPE) {
-			EDIT_STATUS = EDIT_ENABLE;
+			EDIT_STATUS = EDIT_DISABLE;
 			mNoteBean = new NoteBean();
 			mNoteBean.setId(System.currentTimeMillis());
 			mNoteBean.setMinSeconds(System.currentTimeMillis());
@@ -52,7 +52,7 @@ public class ContentActivity extends AppCompatActivity {
 		} else {
 			EDIT_STATUS = EDIT_DISABLE;
 			noteId = intent.getIntExtra(Tag.NOTE_ID, 0);
-			mNoteBean = NoteUtils.getNote(noteId);
+			mNoteBean = NoteUtils.getInstance(this).getNote(noteId);
 		}
 	}
 

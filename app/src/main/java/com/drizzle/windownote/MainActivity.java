@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.main_fab) FloatingActionButton mFloatingActionButton;
 
 	private MainAdapter mMainAdapter;
-	private List<NoteBean> mNoteBeanList;
+	private List<NoteBean> mNoteBeanList=new ArrayList<>();
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override protected void onResume() {
 		super.onResume();
-		List<NoteBean> noteBeanList = NoteUtils.getNoteList();
+		List<NoteBean> noteBeanList = NoteUtils.getInstance(this).getNoteList();
 		mNoteBeanList.clear();
 		mNoteBeanList.addAll(noteBeanList);
 		mMainAdapter.notifyDataSetChanged();

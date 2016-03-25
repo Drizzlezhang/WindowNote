@@ -10,21 +10,23 @@ import java.util.List;
  * Created by drizzle on 16/3/25.
  */
 public class NoteUtils {
+	private static NoteUtils mNoteUtils = new NoteUtils();
 	private static Gson mGson;
 	private static SharedPreferences mSharedPreferences;
 	private static SharedPreferences.Editor mEditor;
 
-	public NoteUtils getInstance(Context context) {
+
+	public static NoteUtils getInstance(Context context) {
 		mSharedPreferences = context.getSharedPreferences(Tag.PERFENCE_NAME, Context.MODE_PRIVATE);
 		mEditor = mSharedPreferences.edit();
 		mGson = new Gson();
-		return this;
+		return mNoteUtils;
 	}
 
 	/**
 	 * 存在则修改,不存在则新建
 	 */
-	public static void saveNote(NoteBean noteBean) {
+	public void saveNote(NoteBean noteBean) {
 		String cache = mSharedPreferences.getString(Tag.PERFENCE_NAME, "[]");
 		List<NoteBean> noteBeans = mGson.fromJson(cache, new TypeToken<List<NoteBean>>() {
 		}.getType());
@@ -37,7 +39,7 @@ public class NoteUtils {
 		mEditor.apply();
 	}
 
-	public static void removeNote(NoteBean noteBean) {
+	public void removeNote(NoteBean noteBean) {
 		String cache = mSharedPreferences.getString(Tag.PERFENCE_NAME, "[]");
 		List<NoteBean> noteBeans = mGson.fromJson(cache, new TypeToken<List<NoteBean>>() {
 		}.getType());
@@ -49,14 +51,14 @@ public class NoteUtils {
 		mEditor.apply();
 	}
 
-	public static NoteBean getNote(int position) {
+	public NoteBean getNote(int position) {
 		String cache = mSharedPreferences.getString(Tag.PERFENCE_NAME, "[]");
 		List<NoteBean> noteBeans = mGson.fromJson(cache, new TypeToken<List<NoteBean>>() {
 		}.getType());
 		return noteBeans.get(position);
 	}
 
-	public static List<NoteBean> getNoteList(){
+	public List<NoteBean> getNoteList(){
 		String cache = mSharedPreferences.getString(Tag.PERFENCE_NAME, "[]");
 		List<NoteBean> noteBeans = mGson.fromJson(cache, new TypeToken<List<NoteBean>>() {
 		}.getType());

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:id="@+id/edit_layout"
+	android:background="@color/white"
+	>
+	<EditText
+		android:id="@+id/window_edit"
+		android:layout_width="match_parent"
+		android:layout_height="100dp"
+		android:padding="16dp"
+		android:hint="@string/edit_content"
+		android:textSize="16sp"
+		android:nestedScrollingEnabled="true"
+		android:lineSpacingExtra="4dp"
+		android:background="@null"
+		android:gravity="start"
+		android:textColor="@color/black"
+		/>
+	<Button
+		android:id="@+id/window_ok_btn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="保存"
+		android:background="@color/white"
+		android:layout_below="@id/window_edit"
+		android:layout_alignParentEnd="true"
+		/>
+	<Button
+		android:id="@+id/window_cancel_btn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="取消"
+		android:background="@color/white"
+		android:layout_below="@id/window_edit"
+		android:layout_toLeftOf="@id/window_ok_btn"
+		/>
+
+</RelativeLayout>

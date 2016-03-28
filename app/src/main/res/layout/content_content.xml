@@ -20,8 +20,8 @@
 		android:textSize="20sp"
 		android:hint="@string/edit_title"
 		android:textColor="@color/black"
-		android:enabled="false"
 		android:gravity="bottom"
+		android:imeOptions="actionDone"
 		/>
 	<EditText
 		android:id="@+id/content_edit"
@@ -34,13 +34,13 @@
 		android:lineSpacingExtra="4dp"
 		android:background="@null"
 		android:textColor="@color/black"
-		android:enabled="false"
 		/>
 	<TextView
 		android:id="@+id/content_date"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="2014年"
+		android:transitionName="@string/transition_date"
 		android:layout_gravity="end"
 		android:textSize="16sp"
 		android:layout_margin="12dp"

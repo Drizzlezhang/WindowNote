@@ -14,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -25,7 +28,7 @@ public class ContentActivity extends AppCompatActivity {
 	@Bind(R.id.content_edit) EditText contentEdit;
 	@Bind(R.id.content_date) TextView contentDate;
 	private int noteId;
-	private int EDIT_STATUS;
+	private int EDIT_STATUS = 2;
 	private static final int EDIT_DISABLE = 1;
 	private static final int EDIT_ENABLE = 2;
 	private int noteType;
@@ -43,26 +46,27 @@ public class ContentActivity extends AppCompatActivity {
 		Intent intent = getIntent();
 		noteType = intent.getIntExtra(Tag.NOTE_TYPE, Tag.NEW_NOTE_TYPE);
 		if (noteType == Tag.NEW_NOTE_TYPE) {
-			EDIT_STATUS = EDIT_DISABLE;
+			noteId = (int) System.currentTimeMillis();
 			mNoteBean = new NoteBean();
-			mNoteBean.setId(System.currentTimeMillis());
+			mNoteBean.setId(noteId);
 			mNoteBean.setMinSeconds(System.currentTimeMillis());
 			mNoteBean.setTitle("");
 			mNoteBean.setContent("");
 		} else {
-			EDIT_STATUS = EDIT_DISABLE;
 			noteId = intent.getIntExtra(Tag.NOTE_ID, 0);
 			mNoteBean = NoteUtils.getInstance(this).getNote(noteId);
 		}
 	}
 
 	private void initViews() {
-		refreshEditStatus();
+		mToolbar.setTitle(R.string.toolbar_edit);
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		titleEdit.setText(mNoteBean.getTitle());
+		contentEdit.setText(mNoteBean.getContent());
 		contentDate.setText(mNoteBean.getDate());
+		titleEdit.setFocusable(true);
 		mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
 				if (EDIT_STATUS == EDIT_DISABLE) {
@@ -94,8 +98,10 @@ public class ContentActivity extends AppCompatActivity {
 		if (EDIT_STATUS == EDIT_DISABLE) {
 			finish();
 		} else {
-			if (TextUtils.isEmpty(titleEdit.getText().toString()) || TextUtils.isEmpty(
+			if (TextUtils.isEmpty(titleEdit.getText().toString()) && TextUtils.isEmpty(
 				contentEdit.getText().toString())) {
+				finish();
+			} else {
 				new AlertDialog.Builder(this).setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
@@ -106,8 +112,6 @@ public class ContentActivity extends AppCompatActivity {
 						dialog.dismiss();
 					}
 				}).setTitle("确定?").setMessage(R.string.dialog_message).show();
-			} else {
-				finish();
 			}
 		}
 	}
@@ -126,6 +130,21 @@ public class ContentActivity extends AppCompatActivity {
 		switch (id) {
 			case android.R.id.home:
 				onBackClicked();
+				break;
+			case R.id.action_add:
+				if (TextUtils.isEmpty(titleEdit.getText().toString()) && TextUtils.isEmpty(
+					contentEdit.getText().toString())) {
+					Toast.makeText(ContentActivity.this, "标题和内容都为空", Toast.LENGTH_SHORT).show();
+				} else {
+					mNoteBean.setMinSeconds(System.currentTimeMillis());
+					mNoteBean.setContent(contentEdit.getText().toString());
+					mNoteBean.setTitle(titleEdit.getText().toString());
+					Date date = new Date();
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					mNoteBean.setDate(simpleDateFormat.format(date));
+					NoteUtils.getInstance(ContentActivity.this).saveNote(mNoteBean);
+					finish();
+				}
 				break;
 			default:
 				break;

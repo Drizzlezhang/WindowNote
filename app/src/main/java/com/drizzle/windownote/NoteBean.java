@@ -74,4 +74,14 @@ public class NoteBean implements Comparable<NoteBean> {
 	@Override public int compareTo(NoteBean another) {
 		return (int) (another.getMinSeconds() - this.minSeconds);
 	}
+
+	@Override public String toString() {
+		return "NoteBean{" +
+			"id=" + id +
+			", title='" + title + '\'' +
+			", content='" + content + '\'' +
+			", date='" + date + '\'' +
+			", minSeconds=" + minSeconds +
+			'}';
+	}
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import butterknife.Bind;
@@ -26,13 +27,14 @@ public class MainActivity extends AppCompatActivity {
 	@Bind(R.id.main_fab) FloatingActionButton mFloatingActionButton;
 
 	private MainAdapter mMainAdapter;
-	private List<NoteBean> mNoteBeanList=new ArrayList<>();
+	private List<NoteBean> mNoteBeanList = new ArrayList<>();
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 		initViews();
+		EditWindowManager.createFabWindow(MainActivity.this);
 	}
 
 	private void initViews() {
@@ -45,11 +47,13 @@ public class MainActivity extends AppCompatActivity {
 			@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(MainActivity.this, ContentActivity.class);
 				intent.putExtra(Tag.NOTE_ID, position);
+				Log.d("position", position + "");
 				intent.putExtra(Tag.NOTE_TYPE, Tag.EXIST_NOTE_TYPE);
 				ActivityOptionsCompat optionsCompat =
 					ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this,
-						new Pair<View, String>(view.findViewById(R.id.item_title),
-							getString(R.string.transition_title)),
+						//// FIXME: 16/3/28 用了这个方法导致进入后的Edittext需要获取焦点后才显示文字
+						//new Pair<View, String>(view.findViewById(R.id.item_title),
+						//	getString(R.string.transition_title)),
 						new Pair<View, String>(view.findViewById(R.id.item_date), getString(R.string.transition_date)));
 				ActivityCompat.startActivity(MainActivity.this, intent, optionsCompat.toBundle());
 			}

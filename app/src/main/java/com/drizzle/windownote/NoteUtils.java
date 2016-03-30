@@ -15,7 +15,6 @@ public class NoteUtils {
 	private static SharedPreferences mSharedPreferences;
 	private static SharedPreferences.Editor mEditor;
 
-
 	public static NoteUtils getInstance(Context context) {
 		mSharedPreferences = context.getSharedPreferences(Tag.PERFENCE_NAME, Context.MODE_PRIVATE);
 		mEditor = mSharedPreferences.edit();
@@ -24,7 +23,7 @@ public class NoteUtils {
 	}
 
 	/**
-	 * 存在则修改,不存在则新建
+	 * 存在?修改,不存在?新建
 	 */
 	public void saveNote(NoteBean noteBean) {
 		String cache = mSharedPreferences.getString(Tag.PERFENCE_NAME, "[]");
@@ -58,7 +57,7 @@ public class NoteUtils {
 		return noteBeans.get(position);
 	}
 
-	public List<NoteBean> getNoteList(){
+	public List<NoteBean> getNoteList() {
 		String cache = mSharedPreferences.getString(Tag.PERFENCE_NAME, "[]");
 		List<NoteBean> noteBeans = mGson.fromJson(cache, new TypeToken<List<NoteBean>>() {
 		}.getType());

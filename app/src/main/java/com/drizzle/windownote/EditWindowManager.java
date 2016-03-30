@@ -26,10 +26,10 @@ public class EditWindowManager {
 			editView = new EditView(context);
 			if (editLayoutparams == null) {
 				editLayoutparams = new WindowManager.LayoutParams();
+				editLayoutparams.gravity = Gravity.CENTER;
 				editLayoutparams.type = WindowManager.LayoutParams.TYPE_TOAST;
 				editLayoutparams.format = PixelFormat.RGBA_8888;
 				editLayoutparams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-				editLayoutparams.gravity = Gravity.CENTER;
 				editLayoutparams.width = EditView.viewWidth;
 				editLayoutparams.height = EditView.viewHeight;
 			}
@@ -67,11 +67,11 @@ public class EditWindowManager {
 			fabView = new FabView(context);
 			if (fabLayoutparams == null) {
 				fabLayoutparams = new WindowManager.LayoutParams();
-				fabLayoutparams.type = WindowManager.LayoutParams.TYPE_TOAST;
-				fabLayoutparams.flags =
-					WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 				fabLayoutparams.format = PixelFormat.RGBA_8888;
 				fabLayoutparams.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+				fabLayoutparams.type = WindowManager.LayoutParams.TYPE_TOAST;
+				fabLayoutparams.flags =
+					WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 				fabLayoutparams.width = FabView.viewWidth;
 				fabLayoutparams.height = FabView.viewHeight;
 			}

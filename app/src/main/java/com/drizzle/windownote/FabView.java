@@ -13,17 +13,17 @@ import android.widget.FrameLayout;
 /**
  * Created by drizzle on 16/3/28.
  */
-public class FabView extends FrameLayout {
+public class FabView extends FrameLayout{
 	public static int viewHeight;
 	public static int viewWidth;
-
+	private View mView;
 	public FabView(final Context context) {
 		super(context);
-		LayoutInflater.from(context).inflate(R.layout.float_layout, this);
-		final View view = findViewById(R.id.float_layout);
-		viewHeight = view.getLayoutParams().height;
-		viewWidth = view.getLayoutParams().width;
-		final FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.window_fab);
+		LayoutInflater.from(getContext()).inflate(R.layout.float_layout, this);
+		mView = findViewById(R.id.float_layout);
+		viewHeight = mView.getLayoutParams().height;
+		viewWidth = mView.getLayoutParams().width;
+		final FloatingActionButton floatingActionButton = (FloatingActionButton) mView.findViewById(R.id.window_fab);
 		floatingActionButton.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
 				ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(floatingActionButton, "scaleX", 1.0f, 0.0f);
@@ -53,4 +53,5 @@ public class FabView extends FrameLayout {
 			}
 		});
 	}
+
 }
